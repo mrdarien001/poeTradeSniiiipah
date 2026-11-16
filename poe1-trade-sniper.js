@@ -1,7 +1,7 @@
 window.POE_TRADE_SNIPER_RUNNING = true;
 
 async function goToHideout(token) {
-  const res = await fetch('https://www.pathofexile.com/api/trade2/whisper', {
+  const res = await fetch('https://www.pathofexile.com/api/trade/whisper', {
     headers: {
       accept: '*/*',
       'accept-language': 'en-US,en;q=0.9',
@@ -28,6 +28,14 @@ async function goToHideout(token) {
   }
 }
 
+/**
+ *
+ * @param {string} url
+ */
+function checkIfLiveSearchUrl(url) {
+  return url.includes('trade/fetch');
+}
+
 let hideoutFlag = true;
 let flagTimeout = 1000 * 20;
 // monkey patch fetch
@@ -36,17 +44,10 @@ window.fetch = async (...args) => {
   //console.log("Request:", args);
   const [url] = args;
 
-  const liveSearchId = (() => {
-    const array = window.location.href.split('/');
-    return array[array.length - 2];
-  })();
-  //console.log('liveSearchId', liveSearchId)
-  //console.log('url', url)
-
   const response = await originalFetch(...args);
 
   // implement the money logic
-  if (url.includes(liveSearchId)) {
+  if (checkIfLiveSearchUrl(url)) {
     try {
       const clonedRes = response.clone();
       const resData = await clonedRes.json();

@@ -8,3 +8,9 @@
 2. Enter search filters
 3. Activate live search
 4. Copy paste script into Console (F12)
+
+## Pushing to Repo
+
+1. Create classic token with repo access
+2. `git remote set-url origin https://{token}@github.com/mrdarien001/poeTradeSniiiipa`
+3. `git push --set-upstream origin {branch}`
